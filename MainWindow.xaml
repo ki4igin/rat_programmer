@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="rat_programmer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:rat_programmer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ex="using:AK.Toolkit.WinUI3"
+    mc:Ignorable="d">    
+    <StackPanel Orientation="Vertical">
+        <Border BorderThickness="2" BorderBrush="Red" Margin="5">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                <ToggleButton Content="Подключить" Click="Connect_Click" />
+                <Button Content="Перезагрузить" IsEnabled="{x:Bind ViewModel.IsConnect, Mode=TwoWay}"></Button>
+                <Button Content="Остановить" IsEnabled="{x:Bind ViewModel.IsConnect, Mode=TwoWay}" ></Button>                   
+            </StackPanel>
+        </Border >
+        <Border BorderThickness="2" BorderBrush="Red" Margin="5">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <ToggleButton Content="Одиночный" Command="{x:Bind ViewModel.SingleAsyncCommand}" IsChecked="{x:Bind ViewModel.IsSingleMode, Mode=TwoWay}"/>
+                    <Button Content="Очередь"/>
+                    <Button Content="Тест"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <TextBlock Text="Кол-во выстрелов" Width="150"/>
+                    <TextBlock Width="150" TextAlignment="Right" Text="{x:Bind ViewModel.CounterGun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel> 
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <TextBlock Text="Время срабатывания" Width="150"/>
+                    <ex:NumberBoxEx Width="150" NumberHorizontalAlignment="Right"/>
+                    <TextBlock Text="мc" />
+                </StackPanel>   
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <TextBlock Text="Шаг очереди" Width="150"/>
+                    <ex:NumberBoxEx Width="150" NumberHorizontalAlignment="Right" />
+                    <TextBlock Text="мс" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border BorderThickness="2" BorderBrush="Red" Margin="5">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <Button Content="Непрерывный" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <TextBlock Text="Параметр" Width="150" />
+                    <NumberBox Width="150" />
+                    <TextBlock Text="мс" />
+                </StackPanel>
+            </StackPanel>           
+        </Border>
+        <TextBox x:Name="LogTextBox" FontFamily="Consolas" VerticalAlignment="Bottom" Height="200" IsReadOnly="True" TextWrapping="Wrap" CanBeScrollAnchor="True" TextChanged="LogTextBox_TextChanged"/>
+    </StackPanel>
+</Window>

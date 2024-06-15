@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "rat_programmer (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "rat_programmer (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
