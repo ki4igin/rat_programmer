@@ -59,7 +59,7 @@ public sealed partial class MainWindow : Window
         for (var i = 0; i <= VisualTreeHelper.GetChildrenCount(grid) - 1; i++)
         {
             object obj = VisualTreeHelper.GetChild(grid, i);
-            if (!(obj is ScrollViewer))
+            if (obj is not ScrollViewer)
                 continue;
             ((ScrollViewer)obj).ChangeView(0.0f, ((ScrollViewer)obj).ExtentHeight, 1.0f);
             break;

@@ -13,7 +13,6 @@ public class Programmer
     private readonly SerialPort _serial;
     private bool _reqClosePort = false;
     private bool _askRecive = false;
-    private short _counterGun = 0;
 
     enum Cmd
     {
@@ -118,7 +117,6 @@ public class Programmer
         return false;
     }
 
-
     private void Send(Cmd cmd, short arg)
     {
         byte[] cmdBytes = BitConverter.GetBytes((short)cmd);
@@ -149,9 +147,8 @@ public class Programmer
         // ReSharper disable once FunctionNeverReturns
     }
 
-    private string ToHex(byte[] bytes) =>
+    private static string ToHex(byte[] bytes) =>
         string.Join(" ", bytes.Select(b => $"0x{b:X2}"));
-
 
     private void Receive()
     {
@@ -181,7 +178,6 @@ public class Programmer
                     Trace.WriteLine("Rev:  Неизвестная ошибка");
                 break;
             case Cmd.CNT_GUN:
-                _counterGun = arg;
                 CouunterGunChanged?.Invoke(arg);
                 break;
             default:

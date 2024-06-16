@@ -3,7 +3,6 @@ using MvvmGen;
 using System;
 using System.Threading.Tasks;
 
-
 namespace rat_programmer;
 [ViewModel]
 public partial class ViewModel
