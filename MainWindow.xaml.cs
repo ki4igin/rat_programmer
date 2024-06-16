@@ -36,7 +36,7 @@ public sealed partial class MainWindow : Window
         GetAppWindowAndPresenter();
         _presenter.IsResizable = false;        
         Trace.Listeners.Add(new TextBoxTraceListener(LogTextBox));
-        Trace.WriteLine("Запуск");
+        Trace.WriteLine("Отладочная информация");
     }
 
     private void Connect_Click(object sender, RoutedEventArgs e)
