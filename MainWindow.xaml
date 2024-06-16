@@ -7,34 +7,47 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ex="using:AK.Toolkit.WinUI3"
-    mc:Ignorable="d">    
-    <StackPanel Orientation="Vertical">
+    Title="Programmer"
+    mc:Ignorable="d">
+    <StackPanel Orientation="Vertical" DataContext="{x:Bind ViewModel}">
         <Border BorderThickness="2" BorderBrush="Red" Margin="5">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                 <ToggleButton Content="Подключить" Click="Connect_Click" />
-                <Button Content="Перезагрузить" IsEnabled="{x:Bind ViewModel.IsConnect, Mode=TwoWay}"></Button>
-                <Button Content="Остановить" IsEnabled="{x:Bind ViewModel.IsConnect, Mode=TwoWay}" ></Button>                   
+                <Button Content="Перезагрузить" Command="{Binding RestartAsyncCommand}"/>
+                <Button Content="Остановить" Command="{Binding StopAsyncCommand}" />
             </StackPanel>
         </Border >
         <Border BorderThickness="2" BorderBrush="Red" Margin="5">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                    <ToggleButton Content="Одиночный" Command="{x:Bind ViewModel.SingleAsyncCommand}" IsChecked="{x:Bind ViewModel.IsSingleMode, Mode=TwoWay}"/>
-                    <Button Content="Очередь"/>
-                    <Button Content="Тест"/>
+                    <ToggleButton Content="Одиночный" Command="{Binding SingleAsyncCommand}" IsChecked="{Binding IsSingleMode, Mode=TwoWay}"/>
+                    <ToggleButton Content="Очередь" Command="{Binding BurstAsyncCommand}" IsChecked="{Binding IsBurstMode, Mode=TwoWay}"/>
+                    <Button Content="Тест" Command="{Binding TestAsyncCommand}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                     <TextBlock Text="Кол-во выстрелов" Width="150"/>
-                    <TextBlock Width="150" TextAlignment="Right" Text="{x:Bind ViewModel.CounterGun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel> 
+                    <TextBlock Width="150" TextAlignment="Right" Text="{Binding CounterGun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                     <TextBlock Text="Время срабатывания" Width="150"/>
-                    <ex:NumberBoxEx Width="150" NumberHorizontalAlignment="Right"/>
+                    <ex:NumberBoxEx
+                        Width="150"
+                        NumberHorizontalAlignment="Right" 
+                        Minimum="60"
+                        Maximum="4000"
+                        Value="{Binding ProgTime}"
+                        KeyDown="NumberBoxEx_ProgTime_KeyDown" />
                     <TextBlock Text="мc" />
-                </StackPanel>   
+                </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                     <TextBlock Text="Шаг очереди" Width="150"/>
-                    <ex:NumberBoxEx Width="150" NumberHorizontalAlignment="Right" />
+                    <ex:NumberBoxEx
+                        Width="150"
+                        NumberHorizontalAlignment="Right"
+                        Minimum="0"
+                        Maximum="99"
+                        Value="{Binding StepTime}"
+                        KeyDown="NumberBoxEx_StepTime_KeyDown"/>
                     <TextBlock Text="мс" />
                 </StackPanel>
             </StackPanel>
@@ -42,15 +55,23 @@
         <Border BorderThickness="2" BorderBrush="Red" Margin="5">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                    <Button Content="Непрерывный" />
+                    <ToggleButton Content="Непрерывный" Command="{Binding ContinueAsyncCommand}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                    <TextBlock Text="Параметр" Width="150" />
-                    <NumberBox Width="150" />
-                    <TextBlock Text="мс" />
+                    <TextBlock Text="Ширина имульсов" Width="150" />
+                    <ex:NumberBoxEx 
+                        Minimum="5"
+                        Maximum="100"
+                        Value="{Binding WidthPulse}"
+                        Width="150"
+                        NumberHorizontalAlignment="Right"
+                        KeyDown="NumberBoxEx_WidthPulse_KeyDown"/>
+                    <TextBlock Text="нс" />
                 </StackPanel>
-            </StackPanel>           
+            </StackPanel>
         </Border>
-        <TextBox x:Name="LogTextBox" FontFamily="Consolas" VerticalAlignment="Bottom" Height="200" IsReadOnly="True" TextWrapping="Wrap" CanBeScrollAnchor="True" TextChanged="LogTextBox_TextChanged"/>
+        <Border BorderThickness="2" BorderBrush="Red" Margin="5">
+            <TextBox x:Name="LogTextBox" FontFamily="Consolas" VerticalAlignment="Bottom" Height="170" IsReadOnly="True" TextWrapping="Wrap" CanBeScrollAnchor="True" TextChanged="LogTextBox_TextChanged"/>
+        </Border>
     </StackPanel>
 </Window>

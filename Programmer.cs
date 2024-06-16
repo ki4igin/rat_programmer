@@ -4,6 +4,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace rat_programmer;
 
@@ -77,6 +78,9 @@ public class Programmer
     public async Task<bool> CmdResetAsync() =>
         await CmdSendAsync(Cmd.RESET, 0);
 
+    public async Task<bool> CmdStopAsync() =>
+        await CmdSendAsync(Cmd.STOP, 0);
+
     public async Task<bool> CmdTestAsync() =>
         await CmdSendAsync(Cmd.TEST, 0);
 
@@ -86,11 +90,20 @@ public class Programmer
     public async Task<bool> CmdBurstRunAsync() =>
         await CmdSendAsync(Cmd.BURST_RUN, 0);
 
-    public async Task<bool> CmdTimeSetAsync() =>
-        await CmdSendAsync(Cmd.TIME_SET, 0);
+    public async Task<bool> CmdContinueRunAsync() =>
+        await CmdSendAsync(Cmd.CONTINUE_RUN, 0);
 
-    public async Task<bool> CmdStepSetAsync() =>
-        await CmdSendAsync(Cmd.STEP_SET, 0);
+    public async Task<bool> CmdStopRunAsync() =>
+        await CmdSendAsync(Cmd.STOP, 0);
+
+    public async Task<bool> CmdTimeSetAsync(int time) =>
+        await CmdSendAsync(Cmd.TIME_SET, (short)time);
+
+    public async Task<bool> CmdStepSetAsync(int time) =>
+        await CmdSendAsync(Cmd.STEP_SET, (short)time);
+
+    public async Task<bool> CmdWidthPulseSetAsync(int time) =>
+        await CmdSendAsync(Cmd.WIDTH_SET, (short)time);
 
     private async Task<bool> CmdSendAsync(Cmd cmd, short arg)
     {

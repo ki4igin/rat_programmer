@@ -32,10 +32,11 @@ public sealed partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        AppWindow.Resize(new Windows.Graphics.SizeInt32(500, 600));
+        AppWindow.Resize(new Windows.Graphics.SizeInt32(650, 700));
         GetAppWindowAndPresenter();
-        _presenter.IsResizable = false;
+        _presenter.IsResizable = false;        
         Trace.Listeners.Add(new TextBoxTraceListener(LogTextBox));
+        Trace.WriteLine("Запуск");
     }
 
     private void Connect_Click(object sender, RoutedEventArgs e)
@@ -63,5 +64,26 @@ public sealed partial class MainWindow : Window
             ((ScrollViewer)obj).ChangeView(0.0f, ((ScrollViewer)obj).ExtentHeight, 1.0f);
             break;
         }
+    }
+
+    private void NumberBoxEx_ProgTime_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+            if (ViewModel.SetTimeAsyncCommand.CanExecute(null))
+                ViewModel.SetTimeAsyncCommand.Execute(null);
+    }
+
+    private void NumberBoxEx_StepTime_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+            if (ViewModel.SetStepAsyncCommand.CanExecute(null))
+                ViewModel.SetStepAsyncCommand.Execute(null);
+    }
+
+    private void NumberBoxEx_WidthPulse_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+            if (ViewModel.SetWidthPulseAsyncCommand.CanExecute(null))
+                ViewModel.SetWidthPulseAsyncCommand.Execute(null);
     }
 }
