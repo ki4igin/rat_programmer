@@ -11,7 +11,8 @@ public partial class ViewModel
     {
         Single,
         Burst,
-        Continue
+        Continue,
+        None
     };
 
     private Programmer _programmer;
@@ -53,18 +54,24 @@ public partial class ViewModel
         {
             IsConnect = _programmer.Connect();
         }
+        if (IsConnect)
+        {
+            StopAsyncCommand.Execute(null);
+        }
     }
 
     [Command(CanExecuteMethod = nameof(CanExec))]
-    private async Task RestartAsync()
+    private void Restart()
     {
-        await _programmer.CmdResetAsync();
+        _programmer.CmdReset();
     }
 
     [Command(CanExecuteMethod = nameof(CanExec))]
     private async Task StopAsync()
     {
-        await _programmer.CmdStopAsync();
+        bool access = await _programmer.CmdStopAsync();
+        if (access)
+            ChangeMode(Mode.None);
     }
 
     [Command(CanExecuteMethod = nameof(CanExec))]
@@ -98,39 +105,25 @@ public partial class ViewModel
     }
 
     [Command(CanExecuteMethod = nameof(CanExec))]
-    private async Task SetTimeAsync() =>
-        await _programmer.CmdTimeSetAsync(ProgTime);
+    private async Task SetTimeAsync(object time) =>
+        await _programmer.CmdTimeSetAsync(Convert.ToInt32(time));
 
     [Command(CanExecuteMethod = nameof(CanExec))]
-    private async Task SetStepAsync() =>
-        await _programmer.CmdStepSetAsync(StepTime);
+    private async Task SetStepAsync(object time) =>
+        await _programmer.CmdStepSetAsync(Convert.ToInt32(time));
 
     [Command(CanExecuteMethod = nameof(CanExec))]
-    private async Task SetWidthPulseAsync() =>
-        await _programmer.CmdWidthPulseSetAsync(WidthPulse);
+    private async Task SetWidthPulseAsync(object time) =>
+        await _programmer.CmdWidthPulseSetAsync(Convert.ToInt32(time));
 
+    [CommandInvalidate(nameof(IsConnect))]
     private bool CanExec() => IsConnect;
 
     private void ChangeMode(Mode mode)
     {
-        IsSingleMode = false;
-        IsBurstMode = false;
-        IsContinueMode = false;
-
-        switch (mode)
-        {
-            case Mode.Single:
-                IsSingleMode = true;
-                break;
-            case Mode.Burst:
-                IsBurstMode = true;
-                break;
-            case Mode.Continue:
-                IsContinueMode = true;
-                break;
-            default:
-                break;
-        }
+        IsSingleMode = mode == Mode.Single;
+        IsBurstMode = mode == Mode.Burst;
+        IsContinueMode = mode == Mode.Continue;
+        CounterGun = 0;
     }
-
 }

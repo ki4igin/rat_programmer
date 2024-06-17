@@ -13,7 +13,7 @@
         <Border BorderThickness="2" BorderBrush="Red" Margin="5">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                 <ToggleButton Content="Подключить" Click="Connect_Click" />
-                <Button Content="Перезагрузить" Command="{Binding RestartAsyncCommand}"/>
+                <Button Content="Перезагрузить" Command="{Binding RestartCommand}"/>
                 <Button Content="Остановить" Command="{Binding StopAsyncCommand}" />
             </StackPanel>
         </Border >
@@ -35,8 +35,9 @@
                         NumberHorizontalAlignment="Right" 
                         Minimum="60"
                         Maximum="4000"
-                        Value="{Binding ProgTime}"
-                        KeyDown="NumberBoxEx_ProgTime_KeyDown" />
+                        Value="{Binding ProgTime, Mode=TwoWay}"
+                        KeyDown="NumberBoxEx_ProgTime_KeyDown"
+                        />
                     <TextBlock Text="мc" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
@@ -46,7 +47,7 @@
                         NumberHorizontalAlignment="Right"
                         Minimum="0"
                         Maximum="99"
-                        Value="{Binding StepTime}"
+                        Value="{Binding StepTime, Mode=TwoWay}"
                         KeyDown="NumberBoxEx_StepTime_KeyDown"/>
                     <TextBlock Text="мс" />
                 </StackPanel>
@@ -55,14 +56,14 @@
         <Border BorderThickness="2" BorderBrush="Red" Margin="5">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                    <ToggleButton Content="Непрерывный" Command="{Binding ContinueAsyncCommand}"/>
+                    <ToggleButton Content="Непрерывный" Command="{Binding ContinueAsyncCommand}" IsChecked="{Binding IsContinueMode, Mode=TwoWay}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                     <TextBlock Text="Ширина имульсов" Width="150" />
                     <ex:NumberBoxEx 
                         Minimum="5"
                         Maximum="100"
-                        Value="{Binding WidthPulse}"
+                        Value="{Binding WidthPulse, Mode=TwoWay}"
                         Width="150"
                         NumberHorizontalAlignment="Right"
                         KeyDown="NumberBoxEx_WidthPulse_KeyDown"/>

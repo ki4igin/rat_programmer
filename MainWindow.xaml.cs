@@ -5,6 +5,8 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using System.Diagnostics;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using System.Globalization;
+using MvvmGen.Commands;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,9 +34,9 @@ public sealed partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        AppWindow.Resize(new Windows.Graphics.SizeInt32(650, 700));
+        AppWindow.Resize(new Windows.Graphics.SizeInt32(500, 555));
         GetAppWindowAndPresenter();
-        _presenter.IsResizable = false;        
+        _presenter.IsResizable = false;
         Trace.Listeners.Add(new TextBoxTraceListener(LogTextBox));
         Trace.WriteLine("Отладочная информация");
     }
@@ -66,24 +68,29 @@ public sealed partial class MainWindow : Window
         }
     }
 
+    private void NumberBoxEx_KeyWork(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e, IDelegateCommand @delegate)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter &&
+                e.OriginalSource is TextBox tb &&
+                int.TryParse(tb.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out int value) &&
+                @delegate.CanExecute(null))
+        {
+            @delegate.Execute(value);
+        }
+    }
+
     private void NumberBoxEx_ProgTime_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
     {
-        if (e.Key == Windows.System.VirtualKey.Enter)
-            if (ViewModel.SetTimeAsyncCommand.CanExecute(null))
-                ViewModel.SetTimeAsyncCommand.Execute(null);
+        NumberBoxEx_KeyWork(e, ViewModel.SetTimeAsyncCommand);
     }
 
     private void NumberBoxEx_StepTime_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
     {
-        if (e.Key == Windows.System.VirtualKey.Enter)
-            if (ViewModel.SetStepAsyncCommand.CanExecute(null))
-                ViewModel.SetStepAsyncCommand.Execute(null);
+        NumberBoxEx_KeyWork(e, ViewModel.SetStepAsyncCommand);
     }
 
     private void NumberBoxEx_WidthPulse_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
     {
-        if (e.Key == Windows.System.VirtualKey.Enter)
-            if (ViewModel.SetWidthPulseAsyncCommand.CanExecute(null))
-                ViewModel.SetWidthPulseAsyncCommand.Execute(null);
+        NumberBoxEx_KeyWork(e, ViewModel.SetWidthPulseAsyncCommand);
     }
 }

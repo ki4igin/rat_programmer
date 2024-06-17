@@ -27,6 +27,8 @@ public class Programmer
         WIDTH_SET,
         POLARITY_SET,
 
+        CMD_START_TRAIN,
+
         ERR = 0x0101,
         CNT_GUN,
     };
@@ -74,14 +76,14 @@ public class Programmer
         _reqClosePort = true;        
     }
 
-    public async Task<bool> CmdResetAsync() =>
-        await CmdSendAsync(Cmd.RESET, 0);
+    public void CmdReset() =>
+        Send(Cmd.RESET, 0);
 
     public async Task<bool> CmdStopAsync() =>
         await CmdSendAsync(Cmd.STOP, 0);
 
     public async Task<bool> CmdTestAsync() =>
-        await CmdSendAsync(Cmd.TEST, 0);
+        await CmdSendAsync(Cmd.CMD_START_TRAIN, 0);
 
     public async Task<bool> CmdSingleRunAsync() =>
         await CmdSendAsync(Cmd.SINGLE_RUN, 0);
